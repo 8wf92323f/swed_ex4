@@ -1,3 +1,9 @@
+package com.example.monitorapp;
+
+import com.example.monitorapp.communication.EmailCommunicationChannel;
+import com.example.monitorapp.user.Preferences;
+import com.example.monitorapp.user.User;
+
 public class Main {
     public static void main(String[] args) {
         System system = new System();

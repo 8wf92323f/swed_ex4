@@ -1,3 +1,7 @@
+package com.example.monitorapp.user;
+
+import com.example.monitorapp.communication.CommunicationChannel;
+
 public class Preferences {
     private float frequency;
     private CommunicationChannel notificationChannel;

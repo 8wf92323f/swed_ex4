@@ -1,3 +1,5 @@
+package com.example.monitorapp.communication;
+
 public class Notification {
     private final String content;
 

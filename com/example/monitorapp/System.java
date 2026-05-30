@@ -1,3 +1,9 @@
+package com.example.monitorapp;
+
+import com.example.monitorapp.user.User;
+import com.example.monitorapp.websiteservice.WebsiteMonitor;
+import com.example.monitorapp.websiteservice.WebsiteMonitorImplementation;
+
 import java.util.ArrayList;
 import java.util.List;
 

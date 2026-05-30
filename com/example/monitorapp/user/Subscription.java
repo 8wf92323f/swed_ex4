@@ -1,3 +1,9 @@
+package com.example.monitorapp.user;
+
+import com.example.monitorapp.communication.CommunicationChannel;
+import com.example.monitorapp.communication.Notification;
+import com.example.monitorapp.websiteservice.WebsiteMonitor;
+
 import java.lang.System;
 
 /**

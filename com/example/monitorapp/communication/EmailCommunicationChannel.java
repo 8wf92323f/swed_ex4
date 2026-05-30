@@ -1,3 +1,7 @@
+package com.example.monitorapp.communication;
+
+import com.example.monitorapp.user.User;
+
 import java.lang.System;
 
 /**
