@@ -1,5 +1,11 @@
 package com.example.monitorapp.websiteservice;
 
 public interface WebsiteMonitor {
-    String getUpdates(String url);
+    String getState();
+
+    void update();
+
+    void attachObserver(WebsiteObserver observer);
+
+    void detachObserver(WebsiteObserver observer);
 }

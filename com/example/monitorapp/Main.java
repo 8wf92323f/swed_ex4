@@ -1,19 +1,24 @@
 package com.example.monitorapp;
 
+import com.example.monitorapp.communication.CommunicationChannel;
 import com.example.monitorapp.communication.EmailCommunicationChannel;
 import com.example.monitorapp.user.Preferences;
 import com.example.monitorapp.user.User;
 
 public class Main {
     public static void main(String[] args) {
-        System system = new System();
+        Application application = new Application();
+        CommunicationChannel emailCommunicationChannel = new EmailCommunicationChannel();
 
-        User user = new User("John Doe");
-        system.addUser(user);
+        User john = new User("John Doe");
+        john.registerSubscription("www.example1.com", new Preferences(1.0F, emailCommunicationChannel));
+        john.registerSubscription("www.example2.com", new Preferences(2.0F, emailCommunicationChannel));
+        application.addUser(john);
 
-        Preferences preferences = new Preferences(60.0F, new EmailCommunicationChannel());
-        user.registerSubscription("examplewebsite.com", preferences);
+        User jane = new User("Jane Doe");
+        jane.registerSubscription("www.example1.com", new Preferences(1.0f, emailCommunicationChannel));
+        application.addUser(jane);
 
-        system.update();
+        application.run();
     }
 }

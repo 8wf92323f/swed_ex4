@@ -1,19 +1,11 @@
 package com.example.monitorapp.user;
 
-import com.example.monitorapp.websiteservice.WebsiteMonitor;
+import com.example.monitorapp.communication.CommunicationTarget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Deviations from the diagram:
- *
- * The User has an additional getName function.
- *
- * The update function has the systems website monitor as parameter,
- * in order to pass it as a parameter for the Subscriptions update function.
- */
-public class User {
+public class User implements CommunicationTarget {
     private final String name;
     private final List<Subscription> subscriptions;
 
@@ -27,16 +19,20 @@ public class User {
     }
 
     public void cancelSubscription(String url) {
-        this.subscriptions.removeIf(subscription -> subscription.getUrl().equals(url));
-    }
-
-    public void update(WebsiteMonitor websiteMonitor) {
         for (Subscription subscription : this.subscriptions) {
-            subscription.update(websiteMonitor);
+            if (subscription.getUrl().equals(url)) {
+                this.subscriptions.remove(subscription);
+                subscription.cancel();
+            }
         }
     }
 
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getEmail() {
+        return this.getName().toLowerCase().replace(' ', '.') + "@examplemail.com";
     }
 }

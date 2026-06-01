@@ -1,59 +1,51 @@
 package com.example.monitorapp.user;
 
+import com.example.monitorapp.Application;
 import com.example.monitorapp.communication.CommunicationChannel;
 import com.example.monitorapp.communication.Notification;
 import com.example.monitorapp.websiteservice.WebsiteMonitor;
+import com.example.monitorapp.websiteservice.WebsiteObserver;
 
-import java.lang.System;
-
-/**
- * Changes from the diagram:
- *
- * The Subscription class stores the user it is for,
- * in order to send a notification in the update function.
- *
- * The Subscription object has an additional lastCheckedTime timestamp,
- * in order to recognize enough time to issue a new update check has passed.
- *
- * The update function has the systems website monitor as parameter,
- * in order to perform website update checks.
- */
-public class Subscription {
+public class Subscription implements WebsiteObserver {
     private final User user;
     private String url;
+    private WebsiteMonitor websiteMonitor;
     private Preferences preferences;
-    private long lastCheckedTime;
+    private String websiteState = null;
 
     public Subscription(User user, String url, Preferences preferences) {
         this.user = user;
         this.url = url;
         this.preferences = preferences;
+
+        this.websiteMonitor = Application.getMonitorFor(this.url);
+        this.websiteMonitor.attachObserver(this);
     }
 
-    public void update(WebsiteMonitor websiteMonitor) {
-        long now = System.currentTimeMillis();
+    public void update() {
+        this.websiteState = this.websiteMonitor.getState();
 
-        // calculate pause time between update checks in ms
-        float msPerMinute = 60.0F * 1000.0F;
-        float updatesPerMinute = this.preferences.getFrequency();
-        long updateTimePause = (long)(msPerMinute / updatesPerMinute);
+        String message = this.url + " changed:\n" + this.websiteState;
+        Notification notification = new Notification(message);
 
-        if (now >= this.lastCheckedTime + updateTimePause) {
-            this.lastCheckedTime = now;
+        CommunicationChannel notificationChannel = this.preferences.getNotificationChannel();
+        notificationChannel.sendNotification(this.user, notification, this.preferences.getFrequency());
+    }
 
-            String content = websiteMonitor.getUpdates(this.url);
-
-            if (!content.isEmpty()) {
-                Notification notification = new Notification(content);
-
-                CommunicationChannel notificationChannel = this.preferences.getNotificationChannel();
-                notificationChannel.sendNotification(this.user, notification);
-            }
-        }
+    public void cancel() {
+        this.websiteMonitor.detachObserver(this);
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        if (!url.equals(this.url)) {
+            this.websiteMonitor.detachObserver(this);
+
+            this.websiteState = null;
+            this.url = url;
+
+            this.websiteMonitor = Application.getMonitorFor(url);
+            this.websiteMonitor.attachObserver(this);
+        }
     }
 
     public void setPreferences(Preferences preferences) {
