@@ -4,7 +4,6 @@ import com.example.monitorapp.user.User;
 import com.example.monitorapp.websiteservice.DummyWebsiteMonitor;
 import com.example.monitorapp.websiteservice.WebsiteMonitor;
 import com.example.monitorapp.websiteservice.comparison.HtmlContentStrategy;
-import com.example.monitorapp.websiteservice.comparison.TextContentStrategy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ public class Application {
             this.monitors.values().forEach(WebsiteMonitor::update);
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 System.err.println("Interrupted Exception: " + e.getMessage());
                 break;
@@ -46,7 +45,7 @@ public class Application {
         }
 
         WebsiteMonitor monitor = singleton.monitors.computeIfAbsent(url, DummyWebsiteMonitor::new);
-        monitor.setStrategy(new TextContentStrategy());
+        monitor.setStrategy(new HtmlContentStrategy());
 
         return monitor;
     }

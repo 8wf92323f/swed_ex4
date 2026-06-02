@@ -9,8 +9,10 @@ import java.util.Random;
 public class DummyWebsiteMonitor extends AbstractWebsiteMonitor {
     private static final Random RANDOM = new Random();
     private static final String[] STATES = new String[]{
-            "<html><head></head><body>State1</body></html>",
-            "<html><head></head><body>State2</body></html>"
+            "<html><!--COMMENT--><head></head><body>State1\nTest new line</body></html>",
+            "<html><head></head><body>State1\n    Test new line</body>    </html>",
+            "<html><head></head><body>State2</body>    </html>",
+            "<html><head></head><body>State2            </body><!--COMMENT--></html>"
     };
 
     public DummyWebsiteMonitor(String url) {

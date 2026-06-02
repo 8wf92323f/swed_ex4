@@ -21,7 +21,7 @@ public abstract class AbstractWebsiteMonitor implements WebsiteMonitor {
 
         if (newWebsiteState == null) return;
 
-        if (this.websiteState == null || this.strategy.compare(this.websiteState, newWebsiteState)) {
+        if (this.websiteState == null || !this.strategy.compare(this.websiteState, newWebsiteState)) {
             this.websiteState = newWebsiteState;
 
             for (WebsiteObserver observer : this.observers) {

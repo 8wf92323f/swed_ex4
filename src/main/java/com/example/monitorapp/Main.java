@@ -12,11 +12,11 @@ public class Main {
 
         User john = new User("John Doe");
         john.registerSubscription("www.example1.com", new Preferences(1.0F, emailCommunicationChannel));
-        john.registerSubscription("www.example2.com", new Preferences(2.0F, emailCommunicationChannel));
+        //john.registerSubscription("www.example2.com", new Preferences(2.0F, emailCommunicationChannel));
         application.addUser(john);
 
         User jane = new User("Jane Doe");
-        jane.registerSubscription("www.example1.com", new Preferences(1.0f, emailCommunicationChannel));
+        //jane.registerSubscription("www.example1.com", new Preferences(1.0f, emailCommunicationChannel));
         application.addUser(jane);
 
         application.run();
