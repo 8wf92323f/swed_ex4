@@ -1,11 +1,14 @@
 package com.example.monitorapp.websiteservice;
 
+import com.example.monitorapp.websiteservice.comparison.Strategy;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractWebsiteMonitor implements WebsiteMonitor {
     private final List<WebsiteObserver> observers = new ArrayList<>();
-    protected final String url;
+    private final String url;
+    private Strategy strategy = (s1, s2) -> false;
     private String websiteState = null;
 
     public AbstractWebsiteMonitor(String url) {
@@ -16,10 +19,14 @@ public abstract class AbstractWebsiteMonitor implements WebsiteMonitor {
     public void update() {
         String newWebsiteState = this.fetchWebsiteState();
 
-        if (newWebsiteState != null && !newWebsiteState.equals(this.websiteState)) {
+        if (newWebsiteState == null) return;
+
+        if (this.websiteState == null || this.strategy.compare(this.websiteState, newWebsiteState)) {
             this.websiteState = newWebsiteState;
 
-            this.observers.forEach(WebsiteObserver::update);
+            for (WebsiteObserver observer : this.observers) {
+                observer.update();
+            }
         }
     }
 
@@ -36,6 +43,15 @@ public abstract class AbstractWebsiteMonitor implements WebsiteMonitor {
     @Override
     public String getState() {
         return this.websiteState;
+    }
+
+    @Override
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public String getUrl() {
+        return this.url;
     }
 
     protected abstract String fetchWebsiteState();

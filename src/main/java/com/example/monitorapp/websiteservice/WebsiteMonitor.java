@@ -1,5 +1,7 @@
 package com.example.monitorapp.websiteservice;
 
+import com.example.monitorapp.websiteservice.comparison.Strategy;
+
 public interface WebsiteMonitor {
     String getState();
 
@@ -8,4 +10,6 @@ public interface WebsiteMonitor {
     void attachObserver(WebsiteObserver observer);
 
     void detachObserver(WebsiteObserver observer);
+
+    void setStrategy(Strategy strategy);
 }
