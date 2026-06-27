@@ -7,18 +7,17 @@ import com.example.monitorapp.user.User;
 
 public class Main {
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Error: no arguments specified (args[0] must be a website url)");
+            return;
+        }
+
         Application application = new Application();
         CommunicationChannel emailCommunicationChannel = new EmailCommunicationChannel();
-
         User john = new User("John Doe");
-        john.registerSubscription("www.example1.com", new Preferences(1.0F, emailCommunicationChannel));
-        //john.registerSubscription("www.example2.com", new Preferences(2.0F, emailCommunicationChannel));
+
+        john.registerSubscription(args[0], new Preferences(1.0F, emailCommunicationChannel));
         application.addUser(john);
-
-        User jane = new User("Jane Doe");
-        //jane.registerSubscription("www.example1.com", new Preferences(1.0f, emailCommunicationChannel));
-        application.addUser(jane);
-
         application.run();
     }
 }

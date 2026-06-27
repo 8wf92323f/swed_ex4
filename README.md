@@ -1,1 +1,7 @@
-# SWED Ex. 4 & 5
+# SWED Website Monitoring System
+
+### Building the project
+
+```
+mvn clean package
+```
